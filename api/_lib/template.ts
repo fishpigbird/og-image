@@ -210,7 +210,6 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             z-index: 2;
             display: flex;
             align-items: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
             flex-shrink: 0;
         }
 
@@ -222,8 +221,8 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             position: absolute;
             top: 20px;
             right: 20px;
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             z-index: 3;
         }
 
