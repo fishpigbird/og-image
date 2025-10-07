@@ -147,14 +147,12 @@ const layoutModeOptions: DropdownOption[] = [
 ];
 
 const imageLightOptions: DropdownOption[] = [
-    { text: 'Nobelium', value: 'https://nobelium.vercel.app/logo-for-light-bg.svg' },
     { text: 'Vercel', value: 'https://assets.vercel.com/image/upload/front/assets/design/vercel-triangle-black.svg' },
     { text: 'Next.js', value: 'https://assets.vercel.com/image/upload/front/assets/design/nextjs-black-logo.svg' },
     { text: 'Hyper', value: 'https://assets.vercel.com/image/upload/front/assets/design/hyper-color-logo.svg' },
 ];
 
 const imageDarkOptions: DropdownOption[] = [
-    { text: 'Nobelium', value: 'https://nobelium.vercel.app/logo-for-dark-bg.svg' },
     { text: 'Vercel', value: 'https://assets.vercel.com/image/upload/front/assets/design/vercel-triangle-white.svg' },
     { text: 'Next.js', value: 'https://assets.vercel.com/image/upload/front/assets/design/nextjs-white-logo.svg' },
     { text: 'Hyper', value: 'https://assets.vercel.com/image/upload/front/assets/design/hyper-bw-logo.svg' },
@@ -333,6 +331,19 @@ const App = (_: any, state: AppState, setState: SetState) => {
                                     let clone = [...heights];
                                     clone[0] = val;
                                     setLoadingState({ heights: clone });
+                                }
+                            })
+                        ),
+                        H('div',
+                            { className: 'field-flex' },
+                            H(Button, {
+                                label: 'Remove Image 1',
+                                onclick: (e: MouseEvent) => {
+                                    e.preventDefault();
+                                    const imagesClone = images.slice(1);
+                                    const widthsClone = widths.slice(1);
+                                    const heightsClone = heights.slice(1);
+                                    setLoadingState({ images: imagesClone, widths: widthsClone, heights: heightsClone });
                                 }
                             })
                         )
