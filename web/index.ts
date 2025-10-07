@@ -146,17 +146,7 @@ const layoutModeOptions: DropdownOption[] = [
     { text: 'AB Image', value: 'ab-image' },
 ];
 
-const imageLightOptions: DropdownOption[] = [
-    { text: 'Vercel', value: 'https://assets.vercel.com/image/upload/front/assets/design/vercel-triangle-black.svg' },
-    { text: 'Next.js', value: 'https://assets.vercel.com/image/upload/front/assets/design/nextjs-black-logo.svg' },
-    { text: 'Hyper', value: 'https://assets.vercel.com/image/upload/front/assets/design/hyper-color-logo.svg' },
-];
 
-const imageDarkOptions: DropdownOption[] = [
-    { text: 'Vercel', value: 'https://assets.vercel.com/image/upload/front/assets/design/vercel-triangle-white.svg' },
-    { text: 'Next.js', value: 'https://assets.vercel.com/image/upload/front/assets/design/nextjs-white-logo.svg' },
-    { text: 'Hyper', value: 'https://assets.vercel.com/image/upload/front/assets/design/hyper-bw-logo.svg' },
-];
 
 const widthOptions = [
     { text: 'width', value: 'auto' },
@@ -184,7 +174,6 @@ interface AppState extends ParsedRequest {
     loading: boolean;
     showToast: boolean;
     messageToast: string;
-    selectedImageIndex: number;
     widths: string[];
     heights: string[];
     overrideUrl: URL | null;
@@ -210,18 +199,16 @@ const App = (_: any, state: AppState, setState: SetState) => {
         theme = 'light',
         md = true,
         text = '**Hello** World',
-        images=[imageLightOptions[0].value],
+        images=['https://assets.vercel.com/image/upload/front/assets/design/vercel-triangle-black.svg'],
         widths=[],
         heights=[],
         layoutMode = 'default',
         showToast = false,
         messageToast = '',
         loading = true,
-        selectedImageIndex = 0,
         overrideUrl = null,
     } = state;
     const mdValue = md ? '1' : '0';
-    const imageOptions = theme === 'light' ? imageLightOptions : imageDarkOptions;
     const url = new URL(window.location.origin);
     url.pathname = `${encodeURIComponent(text)}.${fileType}`;
     url.searchParams.append('theme', theme);
@@ -249,10 +236,7 @@ const App = (_: any, state: AppState, setState: SetState) => {
                         options: themeOptions,
                         value: theme,
                         onchange: (val: Theme) => {
-                            const options = val === 'light' ? imageLightOptions : imageDarkOptions
-                            let clone = [...images];
-                            clone[0] = options[selectedImageIndex].value;
-                            setLoadingState({ theme: val, images: clone });
+                            setLoadingState({ theme: val });
                         }
                     })
                 }),
@@ -301,14 +285,12 @@ const App = (_: any, state: AppState, setState: SetState) => {
                 H(Field, {
                     label: 'Image 1',
                     input: H('div',
-                        H(Dropdown, {
-                            options: imageOptions,
-                            value: imageOptions[selectedImageIndex].value,
-                            onchange: (val: string) =>  {
+                        H(TextInput, {
+                            value: images[0] || '',
+                            oninput: (val: string) => {
                                 let clone = [...images];
                                 clone[0] = val;
-                                const selected = imageOptions.map(o => o.value).indexOf(val);
-                                setLoadingState({ images: clone, selectedImageIndex: selected });
+                                setLoadingState({ images: clone, overrideUrl: url });
                             }
                         }),
                         H('div',
@@ -340,9 +322,10 @@ const App = (_: any, state: AppState, setState: SetState) => {
                                 label: 'Remove Image 1',
                                 onclick: (e: MouseEvent) => {
                                     e.preventDefault();
-                                    const imagesClone = images.slice(1);
-                                    const widthsClone = widths.slice(1);
-                                    const heightsClone = heights.slice(1);
+                                    const filter = (arr: any[]) => [...arr].filter((_, n) => n !== 0);
+                                    const imagesClone = filter(images);
+                                    const widthsClone = filter(widths);
+                                    const heightsClone = filter(heights);
                                     setLoadingState({ images: imagesClone, widths: widthsClone, heights: heightsClone });
                                 }
                             })
