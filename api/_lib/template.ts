@@ -75,12 +75,12 @@ function getCss(theme: string, fontSize: string) {
     }
 
     .logo-wrapper {
-        display: none;
-        text-align: left;
-        // align-items: center;
-        // align-content: center;
-        // justify-content: center;
-        // justify-items: center;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        justify-items: center;
+        margin-bottom: 50px;
     }
 
     .logo {
