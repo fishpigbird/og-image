@@ -2,6 +2,9 @@ import { readFileSync } from 'fs'
 import { marked } from 'marked'
 import { sanitizeHtml } from './sanitizer'
 import { ParsedRequest } from './types'
+
+// Configure marked to use sync mode
+marked.use({ async: false })
 const twemoji = require('twemoji')
 const twOptions = { folder: 'svg', ext: '.svg' }
 const emojify = (text: string) => twemoji.parse(text, twOptions)
@@ -133,7 +136,7 @@ export function getHtml(parsedReq: ParsedRequest) {
             </div>
             <div class="spacer">
             <div class="heading">${emojify(
-              md ? marked(text) : sanitizeHtml(text)
+              md ? String(marked(text)) : sanitizeHtml(text)
             )}
             </div>
         </div>
