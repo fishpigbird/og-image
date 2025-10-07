@@ -233,11 +233,12 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
 
         .background-image {
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             width: 100%;
-            height: auto;
+            height: 100%;
             object-fit: cover;
+            object-position: top center;
             z-index: 1;
         }
 
