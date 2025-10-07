@@ -141,6 +141,11 @@ const markdownOptions: DropdownOption[] = [
     { text: 'Markdown', value: '1' },
 ];
 
+const layoutModeOptions: DropdownOption[] = [
+    { text: 'Default', value: 'default' },
+    { text: 'AB Image', value: 'ab-image' },
+];
+
 const imageLightOptions: DropdownOption[] = [
     { text: 'Nobelium', value: 'https://nobelium.vercel.app/logo-for-light-bg.svg' },
     { text: 'Vercel', value: 'https://assets.vercel.com/image/upload/front/assets/design/vercel-triangle-black.svg' },
@@ -210,6 +215,7 @@ const App = (_: any, state: AppState, setState: SetState) => {
         images=[imageLightOptions[0].value],
         widths=[],
         heights=[],
+        layoutMode = 'default',
         showToast = false,
         messageToast = '',
         loading = true,
@@ -223,6 +229,7 @@ const App = (_: any, state: AppState, setState: SetState) => {
     url.searchParams.append('theme', theme);
     url.searchParams.append('md', mdValue);
     url.searchParams.append('fontSize', fontSize);
+    url.searchParams.append('layoutMode', layoutMode);
     for (let image of images) {
         url.searchParams.append('images', image);
     }
@@ -249,6 +256,14 @@ const App = (_: any, state: AppState, setState: SetState) => {
                             clone[0] = options[selectedImageIndex].value;
                             setLoadingState({ theme: val, images: clone });
                         }
+                    })
+                }),
+                H(Field, {
+                    label: 'Layout Mode',
+                    input: H(Dropdown, {
+                        options: layoutModeOptions,
+                        value: layoutMode,
+                        onchange: (val: string) => setLoadingState({ layoutMode: val as any })
                     })
                 }),
                 H(Field, {

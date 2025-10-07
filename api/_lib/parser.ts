@@ -1,17 +1,20 @@
 import { IncomingMessage } from 'http';
 import { parse } from 'url';
-import { ParsedRequest, Theme } from './types';
+import { ParsedRequest, Theme, LayoutMode } from './types';
 
 export function parseRequest(req: IncomingMessage) {
     console.log('HTTP ' + req.url);
     const { pathname, query } = parse(req.url || '/', true);
-    const { fontSize, images, widths, heights, theme, md } = (query || {});
+    const { fontSize, images, widths, heights, theme, md, layoutMode } = (query || {});
 
     if (Array.isArray(fontSize)) {
         throw new Error('Expected a single fontSize');
     }
     if (Array.isArray(theme)) {
         throw new Error('Expected a single theme');
+    }
+    if (Array.isArray(layoutMode)) {
+        throw new Error('Expected a single layoutMode');
     }
     
     const arr = (pathname || '/').slice(1).split('.');
@@ -35,6 +38,7 @@ export function parseRequest(req: IncomingMessage) {
         images: getArray(images),
         widths: getArray(widths),
         heights: getArray(heights),
+        layoutMode: layoutMode === 'ab-image' ? 'ab-image' : 'default',
     };
     parsedRequest.images = getDefaultImages(parsedRequest.images, parsedRequest.theme);
     return parsedRequest;

@@ -114,7 +114,14 @@ function getCss(theme: string, fontSize: string) {
 }
 
 export function getHtml(parsedReq: ParsedRequest) {
-  const { text, theme, md, fontSize, images, widths, heights } = parsedReq
+  const { text, theme, md, fontSize, images, widths, heights, layoutMode } = parsedReq
+
+  // Use different layout based on layoutMode
+  if (layoutMode === 'ab-image') {
+    return getAbImageHtml(parsedReq);
+  }
+
+  // Default layout
   return `<!DOCTYPE html>
 <html>
     <meta charset="utf-8">
@@ -156,4 +163,99 @@ function getImage(src: string, width = 'auto', height = '225') {
 
 function getPlusSign(i: number) {
   return i === 0 ? '' : '<div class="plus">+</div>'
+}
+
+function getAbImageHtml(parsedReq: ParsedRequest) {
+  const { text, theme, md, fontSize, images } = parsedReq
+
+  // AB-Image mode requires: text, background image (images[0]), and favicon (images[1])
+  const backgroundImage = images[0] || 'https://via.placeholder.com/1200x630/cccccc/666666?text=Background+Image'
+  const favicon = images[1] || 'https://via.placeholder.com/64/000000/ffffff?text=Icon'
+
+  let background = 'white'
+  let foreground = 'black'
+
+  if (theme === 'dark') {
+    background = 'black'
+    foreground = 'white'
+  }
+
+  return `<!DOCTYPE html>
+<html>
+    <meta charset="utf-8">
+    <title>Generated Image</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1200px;
+            height: 630px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        .title-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: ${background};
+            color: ${foreground};
+            padding: 30px 40px;
+            font-size: ${sanitizeHtml(fontSize)};
+            font-weight: bold;
+            line-height: 1.3;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+        }
+
+        .title-text {
+            flex: 1;
+        }
+
+        .favicon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            max-height: 80px;
+            max-width: 80px;
+            z-index: 3;
+        }
+
+        .background-image {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .emoji {
+            height: 1em;
+            width: 1em;
+            margin: 0 .05em 0 .1em;
+            vertical-align: -0.1em;
+        }
+    </style>
+    <body>
+        <div class="title-bar">
+            <div class="title-text">${emojify(
+              md ? String(marked(text)) : sanitizeHtml(text)
+            )}</div>
+        </div>
+        <img class="favicon" src="${sanitizeHtml(favicon)}" alt="Icon" />
+        <img class="background-image" src="${sanitizeHtml(backgroundImage)}" alt="Background" />
+    </body>
+</html>`
 }

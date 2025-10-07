@@ -1,3 +1,15 @@
+?layoutMode=default      # 默认模式
+?layoutMode=ab-image     # AB 图模式
+
+
+
+
+
+
+
+
+
+
 <a href="https://vercel.com/new/project?template=vercel/og-image"><img width="128" src="https://vercel.com/button" align="right"></a> 
 
 # [Open Graph Image as a Service](https://og-image.vercel.app)
