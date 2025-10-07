@@ -2,6 +2,7 @@
     "extends": "../api/tsconfig.json",
     "compilerOptions": {
         "module": "esnext",
+        "lib": ["ES2022", "DOM"],
         "outDir": "../public/dist"
     },
     "include": [
