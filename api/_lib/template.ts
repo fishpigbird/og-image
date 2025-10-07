@@ -172,13 +172,7 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
   const backgroundImage = images[0] || 'https://via.placeholder.com/1200x630/cccccc/666666?text=Background+Image'
   const favicon = images[1] || 'https://via.placeholder.com/64/000000/ffffff?text=Icon'
 
-  let background = 'white'
-  let foreground = 'black'
-
-  if (theme === 'dark') {
-    background = 'black'
-    foreground = 'white'
-  }
+  const foreground = theme === 'dark' ? 'white' : 'black'
 
   return `<!DOCTYPE html>
 <html>
@@ -195,8 +189,8 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
         }
 
         body {
-            width: 1200px;
-            height: 630px;
+            width: 100vw;
+            height: 100vh;
             position: relative;
             overflow: hidden;
             font-family: 'Noto Sans SC', sans-serif;
@@ -207,7 +201,7 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             top: 0;
             left: 0;
             right: 0;
-            background: ${background};
+            background: transparent;
             color: ${foreground};
             padding: 30px 40px;
             font-size: ${sanitizeHtml(fontSize)};
@@ -216,6 +210,7 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             z-index: 2;
             display: flex;
             align-items: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
 
         .title-text {
