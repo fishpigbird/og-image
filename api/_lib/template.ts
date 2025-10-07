@@ -203,9 +203,9 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             position: relative;
             background: transparent;
             color: ${foreground};
-            padding: 30px 40px;
+            padding: 30px 80px;
             font-size: ${sanitizeHtml(fontSize)};
-            font-weight: bold;
+            font-weight: normal;
             line-height: 1.3;
             z-index: 2;
             display: flex;
@@ -222,8 +222,8 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             position: absolute;
             top: 20px;
             right: 20px;
-            max-height: 80px;
-            max-width: 80px;
+            width: 80px;
+            height: 80px;
             z-index: 3;
         }
 
