@@ -58,7 +58,8 @@ function getDefaultImages(images: string[], theme: Theme): string[] {
     if (!images || !images[0]) {
         return [defaultImage];
     }
-    if (!images[0].startsWith('https://assets.vercel.com/') && !images[0].startsWith('https://assets.zeit.co/')) {
+    // Only validate that the image URL uses HTTPS protocol for security
+    if (!images[0].startsWith('https://')) {
         images[0] = defaultImage;
     }
     return images;
