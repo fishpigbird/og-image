@@ -191,16 +191,16 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
         body {
             width: 100vw;
             height: 100vh;
-            position: relative;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
             font-family: 'Noto Sans SC', sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         .title-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            position: relative;
             background: transparent;
             color: ${foreground};
             padding: 30px 40px;
@@ -211,6 +211,7 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             display: flex;
             align-items: center;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            flex-shrink: 0;
         }
 
         .title-text {
@@ -226,6 +227,12 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             z-index: 3;
         }
 
+        .image-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
         .background-image {
             position: absolute;
             top: 0;
@@ -234,7 +241,6 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             height: 100%;
             object-fit: cover;
             object-position: top center;
-            z-index: 1;
         }
 
         .emoji {
@@ -251,7 +257,9 @@ function getAbImageHtml(parsedReq: ParsedRequest) {
             )}</div>
         </div>
         <img class="favicon" src="${sanitizeHtml(favicon)}" alt="Icon" />
-        <img class="background-image" src="${sanitizeHtml(backgroundImage)}" alt="Background" />
+        <div class="image-container">
+            <img class="background-image" src="${sanitizeHtml(backgroundImage)}" alt="Background" />
+        </div>
     </body>
 </html>`
 }
